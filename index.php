@@ -11,7 +11,9 @@
 </head>
 <body>
     <form action="" method="post">
+        <label for="nom">nom :</label>
         <input type="text" name="nom" id="">
+        <label for="mdp">msp</label>
         <input type="text" name="mdp" id="">
         <button name="submit">connexion</button>
         <?php 
