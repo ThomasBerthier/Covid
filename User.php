@@ -6,6 +6,7 @@
         private $_prenom;
         private $_mdp;
         private $_id;
+        private $_Perso;
 
         protected $_DB;
 
@@ -14,7 +15,36 @@
         }
 
         public function setUser($id, $nom, $mdp, $prenom){
+            $this->_id = $id;
+            $this->_nom = $nom;
+            $this->_mdp = $mdp;
+            $this->_prenom = $prenom;
+        }
 
+        public function setUserById($id){
+            $stmt = $this->_DB->prepare("SELECT * FROM User WHERE id= ?");
+            $stmt->execute(array($id));
+            if($tab = $stmt->fetch()){
+                $this->setUser($tab["id"], $tab["nom"], $tab["mdp"], $tab["prenom"]);
+
+                $personnage = new Personnage($this->_DB);
+                $personnage->setPersoById($tab["idPerso"]);
+                $this->_Perso = $personnage;
+            }
+        }
+
+        public function getUserNom(){
+            return $this->_nom;
+        }
+
+        public function getNomPerso(){
+            return $this->_Perso->getNom();
+        }
+
+        public function setPersonnage($perso){
+            $this->_Perso = $perso;
+            $stmt = $this->_DB->prepare("UPDATE User SET idPerso = ? WHERE id = ?");
+            $stmt->execute(array($perso->getId(), $this->_id));
         }
 
         public function ConnecteToi(){
@@ -24,7 +54,10 @@
                 $stmt = $this->_DB->prepare("SELECT * FROM User WHERE nom= ? AND mdp = ?");
                 $stmt->execute(array($_POST["nom"], $_POST["mdp"]));
                 if($tab = $stmt->fetch()){ 
+
+                    $this->setUser($tab["id"], $tab["nom"], $tab["mdp"], $tab["prenom"]);
                     $access = true;
+                    $_SESSION["id"] = $tab["id"];
                     $_SESSION["Connected"]=true;
                     $afficheForm = false;
                     $this->deconnexion();

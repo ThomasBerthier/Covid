@@ -16,7 +16,14 @@ session_start();
     include "db.php"; 
 
     if($access){
-        echo "ok";
+        echo 'ok '.$User1->getUserNom();
+        $Perso1 = new Personnage($DB);
+        $Perso1->listePerso();
+        if(!$Perso1->getId()==0){
+            $User1->setPersonnage($Perso1);
+        }
+        if(!empty($Perso1->getNom()))
+            echo"tu combat avec ".$User1->getNomPerso();
     }else{
         echo "Acces au site refusé";
     }
