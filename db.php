@@ -2,6 +2,7 @@
 
 include "User.php";
 include "Personnage.php";
+include "Mage.php";
 
 try {
     $dsn = 'mysql:dbname=tberthier_virus;host=mysql-tberthier.alwaysdata.net';

@@ -13,17 +13,23 @@ session_start();
 <body>
     
     <?php
-    include "db.php"; 
+    include "db.php";
 
     if($access){
         echo 'ok '.$User1->getUserNom();
-        $Perso1 = new Personnage($DB);
-        $Perso1->listePerso();
-        if(!$Perso1->getId()==0){
-            $User1->setPersonnage($Perso1);
+        $Mage1 = new Mage($DB);
+        $Mage1->listePerso();
+        if(!$Mage1->getId()==0){
+            $User1->setPersonnage($Mage1);
+            $Mage1->setMagie();
         }
-        if(!empty($Perso1->getNom()))
+        if(!empty($Mage1->getNom()))
             echo"tu combat avec ".$User1->getNomPerso();
+        $Ennemi = new Personnage($DB);
+        $Ennemi->setPersoById(1);
+        echo"<p>Le combat contre ".$Ennemi->getNom()." commence</p>";
+        $Mage1->attaque($Ennemi);
+        $Mage1->attaqueMagique($Ennemi);
     }else{
         echo "Acces au site refusé";
     }

@@ -2,10 +2,11 @@
 
     class Personnage{
 
-        private $_id;
-        private $_nom;
-        private $_niveau;
-        private $_vie;
+        protected $_id;
+        protected $_nom;
+        protected $_niveau;
+        protected $_vie;
+        protected $_attaque = 5;
 
         protected $_DB;
 
@@ -57,6 +58,17 @@
                 $this->setPersoById($_POST["idPerso"]);
             }
             return $this;
+        }
+        //attaque du joueur prenant l'objet de l'opposant
+        public function attaque($ennemi){
+            $ennemi->_vie -= $this->_attaque;
+            echo "il reste ".$ennemi->_vie." a l'ennemi";
+            $this->retour($ennemi);
+        }
+        //retour des degats prenant l'objet de l'opposant
+        public function retour($ennemi){
+            $this->_vie -= $ennemi->_attaque;
+            echo "<p>il te reste".$this->_vie." PV</p>";
         }
     }
 
